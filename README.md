@@ -1,142 +1,80 @@
-🛩️ Disaster Relief Drone AI
+# 🚨 DroneAid — Disaster Relief through Drone-Assisted Victim Identification
 
-An AI-powered drone system that captures aerial video during disaster situations and uses computer vision to detect humans, identify victims, and extract location data to support faster rescue operations.
+<div align="center">
 
-📌 Overview
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![YOLO](https://img.shields.io/badge/Object--Detection-YOLOv8-red)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-During natural disasters such as floods, earthquakes, and landslides, rescue teams struggle to manually search for victims in large and dangerous areas.
-This project solves that by using AI + drones to automatically detect people from aerial footage and provide their exact coordinates to rescue teams.
+**A resilient, multi-drone AI system to locate survivors in disaster zones using computer vision, thermal sensing, multisensor fusion, and distributed coordination.**
 
-🚀 Features
+[Features](#-key-features) • [Quick Start](#-quick-start) • [Architecture](#-project-architecture) • [API](#-api-reference)
 
-🛸 Drone Aerial Footage Capture
-Drone records video streams from disaster-affected areas.
+</div>
 
-🎯 AI-Based Human Detection
-Uses a YOLO-based object detection model to identify whether people are present.
+---
 
-🌍 Location Extraction (GPS Coordinates)
-When a person is detected, the system captures:
+## 🌟 Key Features
 
-Latitude
+### 🧠 YOLOv8 Object Detection  
+Like a vigilant eye watching over the disaster zone, YOLOv8 scans every frame in real time. The moment it detects a human or animal, it highlights them instantly — ensuring no potential victim goes unnoticed.  
 
-Longitude
+---
 
-Detection confidence
+### 🎥 OpenCV Live Video Streaming  
+OpenCV acts as the heartbeat of the system. It keeps the camera feed flowing smoothly, turning raw visuals into searchable signals, frame after frame, without missing a moment. 
 
-Bounding box location
+---
 
-🌡️ Thermal Imaging Support (Optional)
-Helps detect victims in low-light or underwater flood conditions.
+### 🌐 Flask-Powered Web Dashboard  
+Flask becomes the command center that brings everything together. A lightweight live dashboard displays the feed, detection boxes, and captured alerts — making monitoring effortless on any device.  
 
-📤 Alert System (Optional)
-Sends notifications to disaster response teams when victims are found.
+---
 
-📊 Visualization Dashboard (Optional)
-A Streamlit / Web UI to view:
+### ⚙️ Multi-Threaded Processing Engine  
+Multiple threads work like a coordinated rescue unit behind the scenes. One captures video, another runs detection, another saves outputs — all in perfect sync, ensuring real-time responsiveness during emergencies.  
 
-Detected persons
+---
 
-Drone path
-
-Video frames
-
-Mapped coordinates
-
-🧠 Tech Stack
-
-Python
-
-OpenCV
-
-YOLO (v5 / v8)
-
-Drone SDK / API (DJI or custom)
-
-Numpy, Pandas
-
-Streamlit / Gradio (optional)
-
-Thermal Camera Feed (optional)
-
-🛠️ How It Works
-
-The drone flies over the disaster region and captures video.
-
-Frames are extracted from the video using OpenCV.
-
-YOLO model processes each frame to detect humans.
-
-If a person is detected:
-
-Bounding box is produced
-
-Detection confidence is calculated
-
-Drone telemetry data provides GPS coordinates
-
-Coordinates + detection details are saved for rescue teams.
-
-(Optional) Alerts are automatically sent to authorities.
-
-📂 Project Structure (Example)
-disaster-relief-drone-ai/
-│── models/                # YOLO weights
-│── input_videos/          # Drone footage
-│── outputs/               # Detection results
-│── scripts/
-│   ├── detect_victims.py  # Main detection script
-│   ├── gps_mapping.py     # GPS extraction logic
-│── README.md
-│── requirements.txt
-
-▶️ How to Run the Project
-1️⃣ Clone the repo
-git clone https://github.com/nareshv-dev/disaster-relief-drone-ai.git
-
-2️⃣ Move into the folder
-cd disaster-relief-drone-ai
-
-3️⃣ Install required packages
-pip install -r requirements.txt
-
-4️⃣ Run the detection script
-python detect_victims.py
-
-✔️ Steps You Have Already Completed
-
-Created the GitHub repository
-
-Opened your project folder in VS Code
-
-Initialized Git using git init
-
-Staged your files with git add .
-
-Committed with git commit -m "first commit"
-
-Connected to GitHub using
-
-git remote add origin https://github.com/nareshv-dev/disaster-relief-drone-ai.git
+### 📁 JSON-Based Detection Logging  
+Every confirmed detection is stored neatly in `detections.json`. Timestamp, confidence, file paths — all recorded, creating a reliable digital trail that supports faster rescue decisions.
 
 
-Pushed the project to GitHub
+## ⚙️ Tech Stack
 
-git push -u origin main
+#### 🐍 Python --> ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-🔮 Future Improvements
+#### 🌐 Flask --> ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 
-Live drone video streaming processing
+#### 🤖 YOLOv8 (Ultralytics) --> ![YOLO](https://img.shields.io/badge/YOLOv8-FF6F00?style=for-the-badge&logo=ai&logoColor=white)
 
-Victim pose estimation (lying, drowning, unconscious)
+#### 🎥 OpenCV --> ![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 
-Real-time map with pinned victim locations
+#### 🧵 Threading --> ![Threading](https://img.shields.io/badge/Threading-FFD43B?style=for-the-badge&logo=python&logoColor=black)
 
-SMS/WhatsApp emergency notifications
+#### 🔗 Requests Library -->![Requests](https://img.shields.io/badge/Requests-000000?style=for-the-badge&logo=python&logoColor=white)
 
-Integration with Disaster Relief Dashboard
+#### 🖼 HTML + Jinja Templates --> ![HTML](https://img.shields.io/badge/HTML-Jinja2-orange?style=for-the-badge)
 
-🤝 Contributions
 
-Feel free to open issues or submit pull requests.
-Contributions are welcome!
+## 🏗️ Project Architecture
+
+```
+drone-rescue-ai/
+│
+├── 📁 static/                          # Public assets served by Flask
+│   ├── 📁 detections/                  # Saved YOLO-annotated output images
+│   └── 📁 images/                      # Raw uploaded/test images
+│
+├── 📁 templates/                       # Flask HTML UI (Jinja2 templates)
+│   └── index.html                      # Live video feed + detection dashboard
+│
+├── app.py                              # Main Flask backend (video stream + YOLO inference)
+├── detections.json                     # Auto-generated detection logs (JSON format)
+├── yolov8n.pt                          # YOLOv8 model weights (Ultralytics)
+├── test.jpg                            # Sample image for testing detection
+├── .env                                # Environment variables (API keys, configs)
+├── .gitignore                          # Git ignored files
+└── README.md                           # Project documentation
+```
+
