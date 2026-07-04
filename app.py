@@ -19,8 +19,20 @@ if not os.path.exists(DETECTIONS_FILE):
     with open(DETECTIONS_FILE, "w") as f:
         json.dump([], f)
 
-BOT_TOKEN = "8033207237:AAHWvy_C1U4u5sT_9-N-ZOZsZ9cAuRgkiCc"
-CHAT_ID = "-1002616147412"
+# Load configuration/secrets from a local file
+SECRETS_FILE = "secrets.json"
+if os.path.exists(SECRETS_FILE):
+    try:
+        with open(SECRETS_FILE, "r") as f:
+            secrets = json.load(f)
+    except Exception as e:
+        print(f"Error loading secrets.json: {e}")
+        secrets = {}
+else:
+    secrets = {}
+
+BOT_TOKEN = secrets.get("telegram_bot_token", "")
+CHAT_ID = secrets.get("telegram_chat_id", "")
 
 # 🔐 Global video capture lock and camera
 camera_lock = threading.Lock()

@@ -65,67 +65,75 @@
 <body class="p-4">
 
     <div class="container">
-        <h2 class="text-center mb-4">🚁 Disaster Drone Management System</h2>
+        <header class="text-center mb-4">
+            <h1 class="h2 mb-4">🚁 Disaster Drone Management System</h1>
+        </header>
 
-        <!-- Live Camera Preview -->
-        <div class="text-center mb-4">
-            <h3 class="mb-3">📷DRONE fOOTAGE</h3>
-            <img src="{{ url_for('video_feed') }}" width="640" height="480" class="border border-dark rounded shadow-sm" />
-        </div>
+        <main>
+            <!-- Live Camera Preview -->
+            <section class="text-center mb-4" aria-labelledby="footage-heading">
+                <h2 id="footage-heading" class="h3 mb-3">📷DRONE fOOTAGE</h2>
+                <img src="{{ url_for('video_feed') }}" width="640" height="480" alt="Live Drone Camera Footage" class="border border-dark rounded shadow-sm" />
+            </section>
 
-        <!-- Detection Button -->
-        <div class="text-center mb-4">
-            <button class="btn btn-lg btn-primary" onclick="getLocationAndDetect()">RUN DETECTION</button>
-        </div>
+            <!-- Detection Button -->
+            <section class="text-center mb-4">
+                <button class="btn btn-lg btn-primary" onclick="getLocationAndDetect()">RUN DETECTION</button>
+            </section>
 
-        {% if detections %}
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle text-center bg-white shadow-sm">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Image</th>
-                        <th>Timestamp</th>
-                        <th>GPS</th>
-                        <th>Status / Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for d in detections %}
-                    <tr>
-                        <td>
-                            <img src="{{ d.image_path }}" width="100" onclick="showImageModal('{{ d.image_path }}')" title="Click to view full image">
-                        </td>
-                        <td>{{ d.timestamp }}</td>
-                        <td>
-                            {{ d.gps }}
-                            {% if d.gps != "Unknown" %}
-                            <br>
-                            <a href="https://www.google.com/maps?q={{ d.gps }}" target="_blank" class="btn btn-sm btn-outline-secondary mt-1">Map</a>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <span class="badge bg-{{ 'warning' if d.status == 'Detected' else 'success' }}">
-                                {{ d.status }}
-                            </span>
-                            {% if d.status == "Detected" %}
-                            <form action="/send_alert" method="POST" class="mt-2">
-                                <input type="hidden" name="timestamp" value="{{ d.timestamp }}">
-                                <button class="btn btn-sm btn-success">Send to Rescue</button>
-                            </form>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="alert alert-info text-center">No detections yet.</div>
-        {% endif %}
+            <!-- Detections History -->
+            <section aria-labelledby="detections-heading">
+                <h2 id="detections-heading" class="visually-hidden">Detections History</h2>
+                {% if detections %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle text-center bg-white shadow-sm">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Image</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">GPS</th>
+                                <th scope="col">Status / Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in detections %}
+                            <tr>
+                                <td>
+                                    <img src="{{ d.image_path }}" width="100" onclick="showImageModal('{{ d.image_path }}')" alt="Detected person screenshot" title="Click to view full image">
+                                </td>
+                                <td>{{ d.timestamp }}</td>
+                                <td>
+                                    {{ d.gps }}
+                                    {% if d.gps != "Unknown" %}
+                                    <br>
+                                    <a href="https://www.google.com/maps?q={{ d.gps }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary mt-1">Map</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ 'warning' if d.status == 'Detected' else 'success' }}">
+                                        {{ d.status }}
+                                    </span>
+                                    {% if d.status == "Detected" %}
+                                    <form action="/send_alert" method="POST" class="mt-2">
+                                        <input type="hidden" name="timestamp" value="{{ d.timestamp }}">
+                                        <button type="submit" class="btn btn-sm btn-success">Send to Rescue</button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info text-center" role="alert">No detections yet.</div>
+                {% endif %}
+            </section>
+        </main>
     </div>
 
     <!-- Fullscreen Image Modal -->
-    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content bg-dark">
                 <div class="modal-header border-0">
@@ -133,7 +141,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="modalImage" class="modal-img rounded shadow">
+                    <img id="modalImage" class="modal-img rounded shadow" alt="Fullscreen view of detected image">
                 </div>
             </div>
         </div>

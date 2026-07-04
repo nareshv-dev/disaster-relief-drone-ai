@@ -31,3 +31,6 @@ static/images/*
 static/detections/*
 !static/images/.gitkeep
 !static/detections/.gitkeep
+
+# Secrets and credentials
+secrets.json
