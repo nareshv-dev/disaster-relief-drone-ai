@@ -84,17 +84,10 @@ def detect():
     if not ret:
         return jsonify({"error": "Failed to capture image"}), 500
 
-    results = model(frame)
+    results = model(frame, classes=[0])
     for r in results:
-        person_detected = False
-        for box in r.boxes:
-            cls = int(box.cls[0])
-            if model.names[cls] == "person":
-                person_detected = True
-                break
-        
-        if person_detected:
-            # Annotate the frame with bounding boxes using YOLO's plot method
+        if len(r.boxes) > 0:
+            # Annotate the frame with bounding boxes (will only contain "person" since we filtered for it)
             annotated_frame = r.plot()
             filename = save_detection(annotated_frame, gps)
             return jsonify({
