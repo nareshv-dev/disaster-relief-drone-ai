@@ -86,15 +86,22 @@ def detect():
 
     results = model(frame)
     for r in results:
+        person_detected = False
         for box in r.boxes:
             cls = int(box.cls[0])
             if model.names[cls] == "person":
-                filename = save_detection(frame, gps)
-                return jsonify({
-                    "message": "Person detected!",
-                    "image": filename,
-                    "gps": gps
-                })
+                person_detected = True
+                break
+        
+        if person_detected:
+            # Annotate the frame with bounding boxes using YOLO's plot method
+            annotated_frame = r.plot()
+            filename = save_detection(annotated_frame, gps)
+            return jsonify({
+                "message": "Person detected!",
+                "image": filename,
+                "gps": gps
+            })
 
     return jsonify({"message": "No person detected."})
 
